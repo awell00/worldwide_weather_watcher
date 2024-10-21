@@ -23,3 +23,16 @@ void addValue(float *oldTab, float newValue)
     }
     oldTab[sizeof(*oldTab)-1] = newValue;
 }
+
+int mean(float *tab)
+{
+    int mean = 0;
+    for (int i=0; i <sizeof(*tab); i++)
+    {
+        if (tab[i] > -41)
+        {
+            mean += tab[i];
+        }
+    }
+    return mean;
+}
