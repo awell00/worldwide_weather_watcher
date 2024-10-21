@@ -209,8 +209,24 @@ void maintenanceMod()
     actualMod = 2;
 
     Serial.begin(9600);
+    Serial.flush();
+
     SD.end();
 
+    BME280 bme280;
+    RTC_DS1307 rtc;
+
+    if(!bme280.init() || analogRead(LUMINOSITY_CAPTOR)<0 || analogRead(LUMINOSITY_CAPTOR) > 1023){
+        errorAccessCaptor();
+    }
+
+    if (!rtc.begin())
+    {
+        errorAccessRTC();
+    }
+
+    Serial.println(rtc.now().timestamp(DateTime::TIMESTAMP_DATE) + ':' + bme280.getHumidity() + ':' + bme280.getPressure() + ':' + bme280.getTemperature());
+    Serial.flush();
 }
 
 void ecoMod()
