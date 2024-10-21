@@ -5,44 +5,111 @@
 #include <SD.h>
 #include <HardwareSerial.h>
 #include <EEPROM.h>
+#include "utils.h"
 
-#define LUMINOSITY_CAPTOR 0
+#define LUMINOSITY_CAPTOR A0
 #define NB_CAPTORS 5
-#define NB_VAL 10
 #define CHIP_SELECT 4
 #define TIME_FOR_STOP_CONFIG_MOD 1800000
 #define MAGIC_WORD 123
 #define VERSION 00001
 
+Captor lumCaptor;
+Captor humidityCaptor;
+Captor pressureCaptor;
+Captor tempCaptor;
+
+Captors captors;
+
+Parameters params;
+
 void standardMod()
 {
     Serial.flush();
-    Serial.end();
+    Serial.begin(9600);
 
     standardModLed();
     actualMod = 0;
 
-
     BME280 bme280;
     RTC_DS1307 rtc;
 
-    if(!bme280.init() || analogRead(LUMINOSITY_CAPTOR)<0 || analogRead(LUMINOSITY_CAPTOR) > 1023){
-        errorAccesCaptor();
+    if(!bme280.init() || analogRead(LUMINOSITY_CAPTOR) == 1023){
+        errorAccessCaptor();
     }
 
     if (!rtc.begin())
     {
-        errorAccesRTC();
+        errorAccessRTC();
     }
 
     if (!SD.begin(CHIP_SELECT)) {
-        errorAccesOrWriteSD();
+        errorAccessOrWriteSD();
     }
 
     //-- Captors Acquisition --\\
 
+    // Luminosity
+    if (lumCaptor.error <= 1)
+    {
+        int luminosity = analogRead(LUMINOSITY_CAPTOR);
 
-    //-- Acquisition Writing -- \\
+        if (luminosity >= 0 && luminosity <= 1023)
+        {
+            addValue(lumCaptor.values ,luminosity);
+        }
+        else
+        {
+            lumCaptor.error++;
+        }
+    }
+
+    //Humidity
+    if (humidityCaptor.error <=1)
+    {
+        const int humidity = bme280.getHumidity();
+
+        if (humidity >= params.HYGR_MINT && humidity <= params.HYGR_MAXT)
+        {
+            addValue(humidityCaptor.values, humidity);
+        }
+        else
+        {
+            humidityCaptor.error++;
+        }
+    }
+
+    //Pressure
+    if (pressureCaptor.error <=1)
+    {
+        const int pressure = bme280.getPressure();
+
+        if (pressure >= params.PRESSURE_MIN && pressure <= params.PRESSURE_MAX)
+        {
+            addValue(pressureCaptor.values, pressure);
+        }
+        else
+        {
+            pressureCaptor.error++;
+        }
+    }
+
+    //Temperature
+    if (tempCaptor.error <=1)
+    {
+        const int temp = bme280.getTemperature();
+
+        if (temp >= params.MIN_TEMP_AIR && temp <= params.MAX_TEMP_AIR)
+        {
+            addValue(tempCaptor.values, temp);
+        }
+        else
+        {
+            tempCaptor.error++;
+        }
+    }
+
+    //-- Acquisition Writing --\\
 
 }
 
@@ -200,7 +267,6 @@ void configMod()
         Serial.flush();
     }
     EEPROM.put(1, params);
-
 }
 
 void maintenanceMod()
