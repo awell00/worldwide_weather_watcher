@@ -22,9 +22,10 @@ void changeMod()
 }
 
 void setup() {
-
     PORTD |= (1 << PD2); // Set pullUp resistance on pin 2 (PORTD, bit 2, at 1)
     PORTD |= (1 << PD3); // Set pullUp resistance on pin 3 (PORTD, bit 3, at 1)
+
+    pinMode(A0, INPUT_PULLUP);
 
     cli(); // Stop interrupts
 
@@ -45,6 +46,7 @@ void setup() {
     else
     {
         standardMod();
+        //configMod();
     }
     attachInterrupt(digitalPinToInterrupt(2), changeMod, FALLING);
     attachInterrupt(digitalPinToInterrupt(3), changeMod, FALLING);
