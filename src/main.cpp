@@ -99,3 +99,27 @@ ISR(TIMER2_OVF_vect) {
         }
     }
 }
+
+ISR(TIMER1_OVF_vect) {
+    static uint16_t overflowCounter;
+    overflowCounter = overflowCounter == NULL ? 0 : overflowCounter;
+    overflowCounter++;
+    if (overflowCounter >= 375 * nbOfMinutes) // On attends x min
+    {
+        switch (actualMod)
+        {
+        case 0:
+            standardMod();
+            break;
+        case 2:
+            maintenanceMod();
+            break;
+        case 3:
+            ecoMod();
+            break;
+        default:
+            break;
+        }
+        overflowCounter = 0;
+    }
+}
