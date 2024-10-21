@@ -24,50 +24,70 @@ void maintenanceModLed()
 
 }
 
-void errorAccesRTC()
+void errorAccessRTC()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(500);
-    led.setColorRGB(0, 0, 255);
-    delay(500);
+    while (1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(500);
+        led.setColorRGB(0, 0, 255);
+        delay(500);
+    }
+
 }
 
-void errorAccesGPS()
+void errorAccessGPS()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(500);
-    led.setColorRGB(255, 255, 0);
-    delay(500);
+    while (1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(500);
+        led.setColorRGB(255, 255, 0);
+        delay(500);
+    }
 }
 
-void errorAccesCaptor()
+void errorAccessCaptor()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(500);
-    led.setColorRGB(0, 255, 0);
-    delay(500);
+    while(1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(500);
+        led.setColorRGB(0, 255, 0);
+        delay(500);
+
+    }
 }
 
 void errorDataCaptorIllogical()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(333);
-    led.setColorRGB(0, 255, 0);
-    delay(667);
+    while (1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(333);
+        led.setColorRGB(0, 255, 0);
+        delay(667);
+    }
 }
 
 void errorSDFull()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(500);
-    led.setColorRGB(255, 255, 255);
-    delay(500);
+    while (1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(500);
+        led.setColorRGB(255, 255, 255);
+        delay(500);
+    }
 }
 
-void errorAccesOrWriteSD()
+void errorAccessOrWriteSD()
 {
-    led.setColorRGB(255, 0, 0);
-    delay(333);
-    led.setColorRGB(255, 255, 255);
-    delay(667);
+    while (1)
+    {
+        led.setColorRGB(255, 0, 0);
+        delay(333);
+        led.setColorRGB(255, 255, 255);
+        delay(667);
+    }
 }

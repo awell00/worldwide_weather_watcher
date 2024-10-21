@@ -13,11 +13,11 @@ void configModLed();
 void ecoModLed();
 void maintenanceModLed();
 
-void errorAccesRTC();
-void errorAccesGPS();
-void errorAccesCaptor();
+void errorAccessRTC();
+void errorAccessGPS();
+void errorAccessCaptor();
 void errorDataCaptorIllogical();
 void errorSDFull();
-void errorAccesOrWriteSD();
+void errorAccessOrWriteSD();
 
 void initLed();
